@@ -1,0 +1,8 @@
+prefix=/home/robond/catkin_ws/devel
+
+Name: localised_bot
+Description: Description of localised_bot
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
