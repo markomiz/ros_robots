@@ -9,7 +9,12 @@
  		<param name="global_frame_id" value="map"/>
  		<param name="initial_pose_x" value="1.6"/>
    	<param name="initial_pose_y" value="-2"/>
+		<param name="initial_pose_a" value="1.2"/>
 		<param name="laser_max_beams" value="100"/>
+		<param name="update_min_d" value="0.01"/>
+		<param name="update_min_a" value="0.01"/>
+		<param name="laser_max_range" value="5"/>
+		<param name="laser_z_hit" value="0.5"/>
   </node>
   <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
   	<remap from="scan" to="/scan"/>
