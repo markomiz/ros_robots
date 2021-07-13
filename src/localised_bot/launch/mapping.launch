@@ -53,8 +53,5 @@
       <param name="Mem/NotLinkedNodesKept" type="string" value="false"/>
     </node>
   </group>
-<<<<<<< HEAD
 </launch>
-=======
-</launch>
->>>>>>> 7fdc303d7ad4271062eaf433495fc25d8d0baef3
+
