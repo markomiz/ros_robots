@@ -4,7 +4,7 @@
 
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
-int create_goal(double x, double y, double w, std::string success_message, MoveBaseClient &ac) 
+int create_goal(double x, double y, MoveBaseClient &ac) 
 {
   move_base_msgs::MoveBaseGoal goal;
 
@@ -14,39 +14,41 @@ int create_goal(double x, double y, double w, std::string success_message, MoveB
 
   goal.target_pose.pose.position.x = x;
   goal.target_pose.pose.position.y = y;
-  goal.target_pose.pose.orientation.w = w;
+  goal.target_pose.pose.orientation.w = 1.0;
 
-  ROS_INFO("Sending goal");
+  ROS_INFO("Sending goal %f %f %f", x, y);
   ac.sendGoal(goal);
 
-  ac.waitForResult();
-
-  if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-  { 
-    // ROS_INFO("goal - %s", success_message.c_str());
-    return 1;
-  }
-
-  else {
-    ROS_INFO("The base failed to move forward 1 meter for some reason");
-    }
   return 0;
 }
 
 int main(int argc, char** argv){
-  ros::init(argc, argv, "simple_navigation_goals");
+  ros::init(argc, argv, "pick_objects");
 
   //tell the action client that we want to spin a thread by default
-  MoveBaseClient ac("pick_objects", true);
+  MoveBaseClient ac("move_base", true);
 
   //wait for the action server to come up
   while(!ac.waitForServer(ros::Duration(5.0))){
     ROS_INFO("Waiting for the pick_objects action server to come up");
   }
 
-  create_goal(5.0,5.0,1.0, "at pick_up location!", ac);
+  create_goal(-1.0,-1.0, ac);
+
+  ac.waitForResult();
+
+  if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+    ROS_INFO("goal - at pick_up location!");
+  else
+    ROS_INFO("The bot failed to move to the goal");
+ 
   ros::Duration(5).sleep();
-  create_goal(10.0, 10.0, 1.0, "at drop off location!", ac);
+
+  create_goal(4.0, -1.0, ac);
+  if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+    ROS_INFO("goal - at drop off location!");
+  else
+    ROS_INFO("The bot failed to move to the goal");
 
   return 0;
 }
