@@ -49,6 +49,8 @@ int main(int argc, char** argv){
     ROS_INFO("goal - at drop off location!");
   else
     ROS_INFO("The bot failed to move to the goal");
+  ac.waitForResult();
+  
 
   return 0;
 }

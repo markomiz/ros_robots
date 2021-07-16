@@ -70,7 +70,7 @@ int main( int argc, char** argv )
   ros::Duration(5).sleep();
   create_marker(0.0, 0.0, true);
   ros::Duration(5).sleep();
-  create_marker(-1.0, -1.0, false);
+  create_marker(4.0, -1.0, false);
 
   return 1;
 

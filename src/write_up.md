@@ -5,15 +5,20 @@
 
 ### Localisation
 
-For localisation my launch file (localised_bot)/acml_demo.launch is run this launches a node which utilises the ros amcl package, taking in map, laser scans and transform messages and outputting an estimated pose.
+For localisation my launch file (localised_bot)/acml_demo.launch is run this launches a node which utilises the ros amcl package, taking in map, laser scans and transform messages and outputting an estimated pose. 
+
+How does it work though? AMCL (Adaptive Monte Carlo Localisation) is a probabalistic, particle based approach - particles are generated around the robot with poses - these particles are then each given a probability of being resampled based on how likely their poses are to give the sensor readings the actual robot is getting. The ones that are most likely or closest to the robots actual pose are more likely to be sampled. After the robot has moved a set minimum distance the odometry data is passed to the particles to update their location (with some error factor that can be adjusted). Then the process of resampling repeats. After a few iterations of this the surviving particles converge on the actual robot location. 
 
 ### Navigation
 
 The ROS navigation stack is used to find paths between goals - the node responsible for this is also launched in (localised_bot)/acml_demo.launch and relies on tuning of the parameters in the launch file itself and the config files (e.g. base_local_planner_params.yaml).
 
+The navigation is comprised roughly into two main steps. The first is discretisation (in this case creating a graph by sampling the space and creating edges between points where there in no obstacle in between) and the second being a search of that graph for a 'good' path. To make this search efficient and effective weights can be assigned to the edges based on their proximity to the goal and the time taken to traverse the edge (other factors can also be counted in). Then the graph search prioritises the paths with shortest distance such that the first solution found by the algorithm will be the shortest path (given that graph, not neccessarily the actual shortest possible path between the points).
+
 ### Mapping
 
 The gmapping package was used to deveop a 2d occupancy grid map from laser and pose data.
+The occupancy grid approach discretises space into a grid of squares ( cubes in 3d version) or *cells* (voxels in 3d). Ideally each of these cells take a value of being unknown, occupied or unoccupied. But in the real world (or simulations) we aren't sure exacly if something is occupied or not. So we store a probility of a cell being occupied or not, then based on sensor data we can update the probabilities based on a binary bayes filter. 
 
 ### Other
 Rviz is used for visualisation, Gazebo for simulating the world and teleop_twist_keyboard when manual navigation was required. 
