@@ -45,11 +45,13 @@ int main(int argc, char** argv){
   ros::Duration(5).sleep();
 
   create_goal(4.0, -1.0, ac);
+  ac.waitForResult();
   if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
     ROS_INFO("goal - at drop off location!");
   else
     ROS_INFO("The bot failed to move to the goal");
-  ac.waitForResult();
+
+  
   
 
   return 0;

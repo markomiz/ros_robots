@@ -80,7 +80,7 @@ void odom_callback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg
       create_marker(goal_x, goal_y, false);
       break;
     case 1: // first marker exists
-      if (close_enough(goal_x, goal_y,  msg->pose.pose.position.x, msg->pose.pose.position.y, 0.03)){
+      if (close_enough(goal_x, goal_y,  msg->pose.pose.position.x, msg->pose.pose.position.y, 0.1)){
          create_marker(goal_x, goal_y, true);
          timer = ros::Time::now();
       }
@@ -94,7 +94,7 @@ void odom_callback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg
       break;
     case 4: // second marker up
       goal_x = 4.0;
-      if (close_enough(goal_x, goal_y,  msg->pose.pose.position.x, msg->pose.pose.position.y, 0.03)) create_marker(goal_x, goal_y, true);
+      if (close_enough(goal_x, goal_y,  msg->pose.pose.position.x, msg->pose.pose.position.y, 0.1)) create_marker(goal_x, goal_y, true);
       break;
 
   } 
